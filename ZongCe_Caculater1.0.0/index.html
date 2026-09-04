@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="按照学校规定权重，实时计算学生综合测评总分。"
+    />
+    <title>学生综合测评成绩计算器</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="app-header">
+        <a class="brand" href="#main-form" aria-label="前往成绩填写区">
+          <span class="brand-mark" aria-hidden="true">P</span>
+          <span>
+            <strong>综合测评</strong>
+            <small>成绩计算器</small>
+          </span>
+        </a>
+        <span class="live-badge">
+          <span class="live-dot" aria-hidden="true"></span>
+          输入后实时计算
+        </span>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">学生综合测评</p>
+          <h1 id="page-title">填入五项成绩，<br />立即得到综合测评总分</h1>
+          <p class="hero-description">
+            无需点击计算。修改任意成绩，结果都会按照学校规定的权重立即更新。
+          </p>
+          <div class="formula" aria-label="综合测评计算公式">
+            <span>P</span>
+            <code>= D × 8% + X × 65% + C × 15% + S × 7% + W × 5%</code>
+          </div>
+        </div>
+
+        <section class="result-card" id="result-card" aria-labelledby="result-title">
+          <div class="result-heading">
+            <div>
+              <p class="result-kicker">实时结果</p>
+              <h2 id="result-title">综合测评总分 P</h2>
+            </div>
+            <span class="result-unit">百分制</span>
+          </div>
+          <output id="result-score" class="result-score" aria-live="polite">0.00</output>
+          <p id="result-status" class="result-status" aria-live="polite">
+            尚未填写，空项暂按 0 计
+          </p>
+          <div class="weight-track" aria-hidden="true">
+            <span class="track-d"></span>
+            <span class="track-x"></span>
+            <span class="track-c"></span>
+            <span class="track-s"></span>
+            <span class="track-w"></span>
+          </div>
+          <div class="weight-legend" aria-label="各项权重">
+            <span><i class="dot-d"></i>D 8%</span>
+            <span><i class="dot-x"></i>X 65%</span>
+            <span><i class="dot-c"></i>C 15%</span>
+            <span><i class="dot-s"></i>S 7%</span>
+            <span><i class="dot-w"></i>W 5%</span>
+          </div>
+        </section>
+      </section>
+
+      <form id="main-form" class="score-panel" novalidate>
+        <div class="section-heading">
+          <div>
+            <p class="section-number">01</p>
+            <div>
+              <h2>填写成绩</h2>
+              <p>请输入 0～100 之间的整数或小数</p>
+            </div>
+          </div>
+          <p class="completion-note">空白成绩暂按 0 分参与计算</p>
+        </div>
+
+        <div class="score-grid">
+          <div class="score-field field-d">
+            <div class="field-topline">
+              <label for="score-d">品德表现 <b>D</b></label>
+              <span>权重 8%</span>
+            </div>
+            <div class="input-wrap">
+              <input
+                id="score-d"
+                name="D"
+                type="text"
+                inputmode="decimal"
+                maxlength="8"
+                autocomplete="off"
+                placeholder="0～100"
+                aria-describedby="error-d"
+              />
+              <span>分</span>
+            </div>
+            <p class="field-error" id="error-d" aria-live="polite"></p>
+          </div>
+
+          <div class="score-field field-x">
+            <div class="field-topline">
+              <label for="score-x">学业成绩 <b>X</b></label>
+              <span>权重 65%</span>
+            </div>
+            <div class="input-wrap">
+              <input
+                id="score-x"
+                name="X"
+                type="text"
+                inputmode="decimal"
+                maxlength="8"
+                autocomplete="off"
+                placeholder="0～100"
+                aria-describedby="error-x"
+              />
+              <span>分</span>
+            </div>
+            <p class="field-error" id="error-x" aria-live="polite"></p>
+          </div>
+
+          <div class="score-field field-c">
+            <div class="field-topline">
+              <label for="score-c">创新实践 <b>C</b></label>
+              <span>权重 15%</span>
+            </div>
+            <div class="input-wrap">
+              <input
+                id="score-c"
+                name="C"
+                type="text"
+                inputmode="decimal"
+                maxlength="8"
+                autocomplete="off"
+                placeholder="0～100"
+                aria-describedby="error-c"
+              />
+              <span>分</span>
+            </div>
+            <p class="field-error" id="error-c" aria-live="polite"></p>
+          </div>
+
+          <div class="score-field field-s">
+            <div class="field-topline">
+              <label for="score-s">社会实践 <b>S</b></label>
+              <span>权重 7%</span>
+            </div>
+            <div class="input-wrap">
+              <input
+                id="score-s"
+                name="S"
+                type="text"
+                inputmode="decimal"
+                maxlength="8"
+                autocomplete="off"
+                placeholder="0～100"
+                aria-describedby="error-s"
+              />
+              <span>分</span>
+            </div>
+            <p class="field-error" id="error-s" aria-live="polite"></p>
+          </div>
+
+          <div class="score-field field-w">
+            <div class="field-topline">
+              <label for="score-w">文体实践 <b>W</b></label>
+              <span>权重 5%</span>
+            </div>
+            <div class="input-wrap">
+              <input
+                id="score-w"
+                name="W"
+                type="text"
+                inputmode="decimal"
+                maxlength="8"
+                autocomplete="off"
+                placeholder="0～100"
+                aria-describedby="error-w"
+              />
+              <span>分</span>
+            </div>
+            <p class="field-error" id="error-w" aria-live="polite"></p>
+          </div>
+        </div>
+      </form>
+
+      <section class="support-grid">
+        <div class="fitness-card">
+          <div class="section-heading compact-heading">
+            <div>
+              <p class="section-number">02</p>
+              <div>
+                <h2>体质测试评价 T</h2>
+                <p>仅作记录，可填写成绩或状态</p>
+              </div>
+            </div>
+          </div>
+          <div class="fitness-content">
+            <div class="input-wrap fitness-input">
+              <input
+                id="fitness-t"
+                name="T"
+                type="text"
+                maxlength="30"
+                autocomplete="off"
+                placeholder="例如：88 或 合格"
+                aria-label="体质测试评价 T"
+              />
+            </div>
+            <div class="fitness-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Zm0-14v5m0 3h.01" />
+              </svg>
+              <p><strong>T 为奖学金申请的首要条件</strong><span>不计入综合测评总分 P，页面不设定或推测合格标准。</span></p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="action-card" aria-label="清空全部内容">
+          <div>
+            <p class="action-eyebrow">重新开始</p>
+            <h2>需要计算另一组成绩？</h2>
+            <p>一键清空五项成绩和体测记录，恢复初始状态。</p>
+          </div>
+          <button id="reset-button" class="reset-button" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 4v6h6M20 20v-6h-6M5.5 15a7 7 0 0 0 11.9 2.4L20 14M4 10l2.6-3.4A7 7 0 0 1 18.5 9" />
+            </svg>
+            清空全部
+          </button>
+        </aside>
+      </section>
+
+      <footer>
+        <p>计算过程仅在当前页面完成，不会上传或保存成绩。</p>
+        <p>权重合计 100%</p>
+      </footer>
+    </main>
+
+    <script src="js/calculator.js" defer></script>
+    <script src="js/app.js" defer></script>
+  </body>
+</html>
