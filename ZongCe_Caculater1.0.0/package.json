@@ -1,9 +1,0 @@
-{
-  "name": "student-comprehensive-score-calculator",
-  "version": "1.0.0",
-  "private": true,
-  "description": "学生综合测评成绩实时计算器",
-  "scripts": {
-    "test": "node --test"
-  }
-}

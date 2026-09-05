@@ -1,0 +1,9 @@
+{
+  "name": "zongce-calculator-v1-2-0",
+  "version": "1.2.0",
+  "private": true,
+  "description": "ZongCe Calculator v1.2.0，适用于广东工业大学 2025～2026 学年综合测评",
+  "scripts": {
+    "test": "node --test"
+  }
+}

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="按照学校规定权重，实时计算学生综合测评总分。"
+      content="ZongCe Calculator v2.0.0，面向广东工业大学 2025～2026 学年综合测评的非官方辅助计算器。"
     />
-    <title>学生综合测评成绩计算器</title>
+    <title>ZongCe Calculator v2.0.0 | 学生综合测评成绩计算器</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -20,22 +20,62 @@
             <small>成绩计算器</small>
           </span>
         </a>
-        <span class="live-badge">
-          <span class="live-dot" aria-hidden="true"></span>
-          输入后实时计算
-        </span>
+        <div class="header-badges" aria-label="版本和运行状态">
+          <span class="version-badge">v2.0.0</span>
+          <span class="live-badge">
+            <span class="live-dot" aria-hidden="true"></span>
+            输入后实时计算
+          </span>
+        </div>
       </header>
+
+      <p class="version-context">
+        <span>ZongCe Calculator v2.0.0</span>
+        <span>广东工业大学</span>
+        <span>2025～2026 学年</span>
+        <span>非官方辅助工具</span>
+      </p>
 
       <section class="hero" aria-labelledby="page-title">
         <div class="hero-copy">
-          <p class="eyebrow">学生综合测评</p>
+          <p class="eyebrow">学生综合测评 · 公开在线版</p>
           <h1 id="page-title">填入五项成绩，<br />立即得到综合测评总分</h1>
           <p class="hero-description">
-            无需点击计算。修改任意成绩，结果都会按照学校规定的权重立即更新。
+            无需点击计算。修改任意成绩或下方权重，结果都会按照当前设置立即更新。
           </p>
-          <div class="formula" aria-label="综合测评计算公式">
-            <span>P</span>
-            <code>= D × 8% + X × 65% + C × 15% + S × 7% + W × 5%</code>
+          <div class="formula-block">
+            <div class="formula" aria-label="可编辑权重的综合测评计算公式">
+              <span>P</span>
+              <div class="formula-expression">
+                <code>= D ×</code>
+                <label class="weight-control field-d">
+                  <input id="weight-d" type="text" inputmode="decimal" maxlength="6" value="8" autocomplete="off" aria-label="D 权重百分比" aria-describedby="weight-error" />
+                  <span>%</span>
+                </label>
+                <code>+ X ×</code>
+                <label class="weight-control field-x">
+                  <input id="weight-x" type="text" inputmode="decimal" maxlength="6" value="65" autocomplete="off" aria-label="X 权重百分比" aria-describedby="weight-error" />
+                  <span>%</span>
+                </label>
+                <code>+ C ×</code>
+                <label class="weight-control field-c">
+                  <input id="weight-c" type="text" inputmode="decimal" maxlength="6" value="15" autocomplete="off" aria-label="C 权重百分比" aria-describedby="weight-error" />
+                  <span>%</span>
+                </label>
+                <code>+ S ×</code>
+                <label class="weight-control field-s">
+                  <input id="weight-s" type="text" inputmode="decimal" maxlength="6" value="7" autocomplete="off" aria-label="S 权重百分比" aria-describedby="weight-error" />
+                  <span>%</span>
+                </label>
+                <code>+ W ×</code>
+                <label class="weight-control field-w">
+                  <input id="weight-w" type="text" inputmode="decimal" maxlength="6" value="5" autocomplete="off" aria-label="W 权重百分比" aria-describedby="weight-error" />
+                  <span>%</span>
+                </label>
+              </div>
+            </div>
+            <p id="weight-error" class="weight-error" aria-live="polite"></p>
+            <p id="weight-warning" class="weight-warning" role="status" aria-live="polite" hidden></p>
           </div>
         </div>
 
@@ -52,18 +92,18 @@
             尚未填写，空项暂按 0 计
           </p>
           <div class="weight-track" aria-hidden="true">
-            <span class="track-d"></span>
-            <span class="track-x"></span>
-            <span class="track-c"></span>
-            <span class="track-s"></span>
-            <span class="track-w"></span>
+            <span id="track-d" class="track-d"></span>
+            <span id="track-x" class="track-x"></span>
+            <span id="track-c" class="track-c"></span>
+            <span id="track-s" class="track-s"></span>
+            <span id="track-w" class="track-w"></span>
           </div>
           <div class="weight-legend" aria-label="各项权重">
-            <span><i class="dot-d"></i>D 8%</span>
-            <span><i class="dot-x"></i>X 65%</span>
-            <span><i class="dot-c"></i>C 15%</span>
-            <span><i class="dot-s"></i>S 7%</span>
-            <span><i class="dot-w"></i>W 5%</span>
+            <span><i class="dot-d"></i>D <b id="legend-weight-d">8%</b></span>
+            <span><i class="dot-x"></i>X <b id="legend-weight-x">65%</b></span>
+            <span><i class="dot-c"></i>C <b id="legend-weight-c">15%</b></span>
+            <span><i class="dot-s"></i>S <b id="legend-weight-s">7%</b></span>
+            <span><i class="dot-w"></i>W <b id="legend-weight-w">5%</b></span>
           </div>
         </section>
       </section>
@@ -84,7 +124,7 @@
           <div class="score-field field-d">
             <div class="field-topline">
               <label for="score-d">品德表现 <b>D</b></label>
-              <span>权重 8%</span>
+              <span>权重 <b id="weight-label-d">8%</b></span>
             </div>
             <div class="input-wrap">
               <input
@@ -105,7 +145,7 @@
           <div class="score-field field-x">
             <div class="field-topline">
               <label for="score-x">学业成绩 <b>X</b></label>
-              <span>权重 65%</span>
+              <span>权重 <b id="weight-label-x">65%</b></span>
             </div>
             <div class="input-wrap">
               <input
@@ -126,7 +166,7 @@
           <div class="score-field field-c">
             <div class="field-topline">
               <label for="score-c">创新实践 <b>C</b></label>
-              <span>权重 15%</span>
+              <span>权重 <b id="weight-label-c">15%</b></span>
             </div>
             <div class="input-wrap">
               <input
@@ -147,7 +187,7 @@
           <div class="score-field field-s">
             <div class="field-topline">
               <label for="score-s">社会实践 <b>S</b></label>
-              <span>权重 7%</span>
+              <span>权重 <b id="weight-label-s">7%</b></span>
             </div>
             <div class="input-wrap">
               <input
@@ -168,7 +208,7 @@
           <div class="score-field field-w">
             <div class="field-topline">
               <label for="score-w">文体实践 <b>W</b></label>
-              <span>权重 5%</span>
+              <span>权重 <b id="weight-label-w">5%</b></span>
             </div>
             <div class="input-wrap">
               <input
@@ -215,7 +255,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Zm0-14v5m0 3h.01" />
               </svg>
-              <p><strong>T 为奖学金申请的首要条件</strong><span>不计入综合测评总分 P，页面不设定或推测合格标准。</span></p>
+              <p><strong>T 的具体要求请以当年度正式文件为准</strong><span>本工具仅记录该项，不将其计入 P，也不设定或推测资格、合格标准。</span></p>
             </div>
           </div>
         </div>
@@ -224,7 +264,7 @@
           <div>
             <p class="action-eyebrow">重新开始</p>
             <h2>需要计算另一组成绩？</h2>
-            <p>一键清空五项成绩和体测记录，恢复初始状态。</p>
+            <p>一键清空五项成绩和体测记录，并恢复默认权重。</p>
           </div>
           <button id="reset-button" class="reset-button" type="button">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -235,9 +275,21 @@
         </aside>
       </section>
 
+      <section class="release-notice" aria-labelledby="release-notice-title">
+        <div>
+          <p class="section-number">03</p>
+          <div>
+            <h2 id="release-notice-title">版本适用范围与使用说明</h2>
+            <p>本版本面向广东工业大学 2025～2026 学年综合测评。后续学年相关规则如发生调整，请使用对应更新版本，并以学校、学院当年度正式文件为准。</p>
+          </div>
+        </div>
+        <p class="privacy-note"><strong>隐私说明：</strong>所有成绩计算均在浏览器本地完成，不会上传或保存用户成绩。</p>
+        <p class="disclaimer"><strong>非官方工具声明：</strong>本工具为个人开发的非官方综合测评辅助计算器。本版本面向广东工业大学 2025～2026 学年综合测评，仅用于成绩估算与参考。具体计算规则、权重、适用条件及最终综合测评结果，请以广东工业大学及所在学院当年度正式文件和官方认定结果为准。</p>
+      </section>
+
       <footer>
-        <p>计算过程仅在当前页面完成，不会上传或保存成绩。</p>
-        <p>权重合计 100%</p>
+        <p>v2.0.0 · 广东工业大学 · 2025～2026 学年 · 非官方辅助工具</p>
+        <p>当前权重合计 <output id="weight-total">100%</output></p>
       </footer>
     </main>
 

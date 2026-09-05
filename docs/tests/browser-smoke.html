@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>浏览器交互冒烟测试</title>
+  </head>
+  <body data-test-status="等待应用加载">
+    <iframe
+      id="app-frame"
+      src="../index.html"
+      title="待测试的综合测评计算器"
+      style="width: 390px; height: 844px; border: 0"
+    ></iframe>
+    <script>
+      const frame = document.getElementById("app-frame");
+
+      function assert(condition, message) {
+        if (!condition) throw new Error(message);
+      }
+
+      frame.addEventListener("load", function () {
+        try {
+          const app = frame.contentDocument;
+          const score = () => app.getElementById("result-score").textContent;
+          const input = (key) => app.getElementById("score-" + key);
+          const weight = (key) => app.getElementById("weight-" + key);
+          const enter = (key, value) => {
+            input(key).value = value;
+            input(key).dispatchEvent(new Event("input", { bubbles: true }));
+          };
+
+          assert(
+            app.documentElement.scrollWidth <= app.documentElement.clientWidth,
+            "390px 移动端页面出现横向溢出",
+          );
+
+          enter("d", "90");
+          enter("x", "85");
+          enter("c", "90");
+          enter("s", "80");
+          enter("w", "90");
+          assert(score() === "86.05", "整数实时计算失败");
+
+          enter("x", "88");
+          assert(score() === "88.00", "修改成绩后未实时更新");
+
+          weight("x").value = "50";
+          weight("x").dispatchEvent(new Event("input", { bubbles: true }));
+          assert(score() === "74.80", "修改权重后未实时更新");
+          assert(app.getElementById("weight-total").textContent === "85%", "权重合计未更新");
+          assert(app.getElementById("weight-warning").hidden === false, "权重异常提醒未显示");
+
+          weight("x").value = "65";
+          weight("x").dispatchEvent(new Event("input", { bubbles: true }));
+          assert(app.getElementById("weight-warning").hidden === true, "权重恢复正常后提醒未清除");
+
+          enter("c", "");
+          assert(score() === "74.50", "删除成绩后未按 0 重算");
+
+          enter("c", "abc");
+          assert(score() === "--", "非法输入未阻止结果显示");
+          assert(app.getElementById("error-c").textContent !== "", "非法输入缺少提示");
+
+          enter("c", "101");
+          assert(app.getElementById("error-c").textContent.includes("100"), "超范围提示错误");
+
+          app.getElementById("fitness-t").value = "合格";
+          app.getElementById("reset-button").click();
+          assert(score() === "0.00", "清空后未恢复初始分数");
+          assert(app.getElementById("fitness-t").value === "", "体测记录未清空");
+          assert(weight("x").value === "65", "清空后未恢复默认权重");
+
+          document.body.setAttribute("data-test-status", "PASS");
+        } catch (error) {
+          document.body.setAttribute("data-test-status", "FAIL: " + error.message);
+        }
+      });
+    </script>
+  </body>
+</html>
